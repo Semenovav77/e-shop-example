@@ -1,11 +1,10 @@
 import React from 'react';
 import {Product} from './../components';
 
-const Products = ({products}) => {
+const Products = ({items, addItem}) => {
     return (
         <>
-            {console.log(products)}
-            {products.map((product) => <Product product={product}/>)}
+            {items.map((product) => <Product key={product.id} product={product} addItem={addItem}/>)}
         </>
     );
 };

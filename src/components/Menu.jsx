@@ -77,7 +77,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const PrimarySearchAppBar = () =>  {
+const PrimarySearchAppBar = ({shoppingProd,items}) =>  {
+    let countShopping = 0;
+    let price = 0;
+    shoppingProd.forEach((item) => {
+        countShopping += item.count;
+        price += item.price*item.count;
+    });
+
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -130,12 +137,12 @@ const PrimarySearchAppBar = () =>  {
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <p>{1000}</p>
+                <p>{price}</p>
                 <img src={RubleSVG} alt='Ruble Svg'/>
             </MenuItem>
             <MenuItem>
                 <IconButton aria-label="show 11 new notifications" color="inherit">
-                    <Badge badgeContent={2} color="secondary">
+                    <Badge badgeContent={countShopping} color="secondary">
                         <ShoppingCartIcon/>
                     </Badge>
                 </IconButton>
@@ -178,10 +185,10 @@ const PrimarySearchAppBar = () =>  {
                     </div>
                     <div className={classes.grow}/>
                     <div className={classes.sectionDesktop}>
-                        <p>{1000}</p>
+                        <p>{price}</p>
                         <img src={RubleSVG} alt='Ruble Svg'/>
                         <IconButton aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={2} color="secondary">
+                            <Badge badgeContent={countShopping} color="secondary">
                                 <ShoppingCartIcon/>
                             </Badge>
                         </IconButton>

@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { green } from '@material-ui/core/colors';
+import {addItem} from "../redux/productReducer";
 
 const ColorButton = withStyles((theme) => ({
     root: {
@@ -30,14 +31,15 @@ const useStyles = makeStyles((theme) => ({
     card: {
         margin: 10,
         width: 250
-    },
-    button: {
 
+    },
+    flexbutton: {
+        justifyContent: 'center',
     }
 
 }));
 
-const MediaCard = ({product: {id, imgBook, title, autor, rating, price}}) => {
+const MediaCard = ({product: {id, imgBook, title, autor, rating, price}, addItem}) => {
     const classes = useStyles();
     const theme = createMuiTheme({
         palette: {
@@ -65,9 +67,9 @@ const MediaCard = ({product: {id, imgBook, title, autor, rating, price}}) => {
                     </Typography>
                     </CardContent>
                 </CardActionArea>
-                <CardActions>
+                <CardActions className={classes.flexbutton}>
                     <ThemeProvider theme={theme}>
-                        <ColorButton className={classes.button} size="small" color="primary">
+                        <ColorButton onClick={() => {addItem(id, price)}} size="small" color="primary">
                             В корзину
                         </ColorButton>
                     </ThemeProvider>
