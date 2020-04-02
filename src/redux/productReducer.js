@@ -1,4 +1,5 @@
 const SET_SHOPPING_ITEM = 'SET_SHOPPING_ITEM';
+const SET_REMOVE_ITEM = 'SET_REMOVE_ITEM';
 
 let initialState = {
     items: Array(40).fill(null).map(() => ({
@@ -36,17 +37,41 @@ const productReducer = (state = initialState, action) => {
                 }
             } else return {
                 ...state,
-                shoppingProd: [...state.shoppingProd, {id: action.idItem, count: 1, price: action.price.new}],
+                shoppingProd: [...state.shoppingProd, {id: action.idItem, count: 1, price: action.price.new, imgBook: action.imgBook, title: action.title}],
+            };
+        case SET_REMOVE_ITEM:
+            let newShopping =  state.shoppingProd.map((item) => {
+                if (item.id === action.idItem) {
+                    if (item.count > 1) {
+                        return {
+                            ...item,
+                            count: --item.count
+                        }
+                    }
+                    else return false
+                }
+                return item;
+            });
+            return {
+                ...state,
+                shoppingProd: newShopping.filter((item) => (item !== false))
             };
         default:
             return state;
     }
 };
 
-export const addItem = (idItem, price) => ({
+export const addItem = (idItem, price, imgBook, title) => ({
     type: SET_SHOPPING_ITEM,
     idItem,
-    price
+    price,
+    imgBook,
+    title
+});
+
+export const delItem = (idItem) => ({
+    type: SET_REMOVE_ITEM,
+    idItem
 });
 
 export default productReducer;

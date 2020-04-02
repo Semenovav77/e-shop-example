@@ -13,11 +13,11 @@ const useStyles = makeStyles({
     }
 });
 
-const App = ({products:{items, shoppingProd}, addItem}) => {
+const App = ({products:{items, shoppingProd}, addItem, delItem}) => {
     const classes = useStyles();
     return (
         <div className="container">
-            <PrimarySearchAppBar shoppingProd={shoppingProd} items={items}/>
+            <PrimarySearchAppBar shoppingProd={shoppingProd} delItem={delItem}/>
             <Container className={classes.cards}>
                 <Products items={items} addItem={addItem}/>
             </Container>

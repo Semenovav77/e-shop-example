@@ -1,5 +1,5 @@
 import React from 'react';
-import {fade, makeStyles} from '@material-ui/core/styles';
+import {fade, makeStyles, ThemeProvider} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,6 +12,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import RubleSVG from './../assets/ruble.svg'
+import CardActions from "@material-ui/core/CardActions/CardActions";
+import PopupState, {bindTrigger} from 'material-ui-popup-state';
+import {Popup} from './../components';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -77,12 +80,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const PrimarySearchAppBar = ({shoppingProd,items}) =>  {
+const PrimarySearchAppBar = ({shoppingProd, delItem}) => {
     let countShopping = 0;
     let price = 0;
     shoppingProd.forEach((item) => {
         countShopping += item.count;
-        price += item.price*item.count;
+        price += item.price * item.count;
     });
 
     const classes = useStyles();
@@ -141,12 +144,20 @@ const PrimarySearchAppBar = ({shoppingProd,items}) =>  {
                 <img src={RubleSVG} alt='Ruble Svg'/>
             </MenuItem>
             <MenuItem>
-                <IconButton aria-label="show 11 new notifications" color="inherit">
-                    <Badge badgeContent={countShopping} color="secondary">
-                        <ShoppingCartIcon/>
-                    </Badge>
-                </IconButton>
-                <p>Shopping</p>
+                <PopupState variant="popover" popupId="demo-popup-popover">
+                    {(popupState) => (
+                        <>
+                            <IconButton aria-label="show 11 new notifications"
+                                        color="inherit" {...bindTrigger(popupState)}>
+                                <Badge badgeContent={countShopping} color="secondary">
+                                    <ShoppingCartIcon/>
+                                </Badge>
+                                <p>Shopping</p>
+                            </IconButton>
+                            <Popup popupState={popupState} shoppingProd={shoppingProd} delItem={delItem}/>
+                        </>
+                    )}
+                </PopupState>
             </MenuItem>
             {/* <MenuItem onClick={handleProfileMenuOpen}>
                 <IconButton
@@ -187,11 +198,19 @@ const PrimarySearchAppBar = ({shoppingProd,items}) =>  {
                     <div className={classes.sectionDesktop}>
                         <p>{price}</p>
                         <img src={RubleSVG} alt='Ruble Svg'/>
-                        <IconButton aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={countShopping} color="secondary">
-                                <ShoppingCartIcon/>
-                            </Badge>
-                        </IconButton>
+                        <PopupState variant="popover" popupId="demo-popup-popover">
+                            {(popupState) => (
+                                <>
+                                    <IconButton aria-label="show 17 new notifications"
+                                                color="inherit" {...bindTrigger(popupState)}>
+                                        <Badge badgeContent={countShopping} color="secondary">
+                                            <ShoppingCartIcon/>
+                                        </Badge>
+                                    </IconButton>
+                                    <Popup popupState={popupState} shoppingProd={shoppingProd} delItem={delItem}/>
+                                </>
+                            )}
+                        </PopupState>
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton
