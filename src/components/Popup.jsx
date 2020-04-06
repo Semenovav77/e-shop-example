@@ -49,7 +49,7 @@ const Popup = ({popupState, shoppingProd, delItem}) => {
             >
                 {(shoppingProd.length > 0) && shoppingProd.map((item) => {
                     return (
-                        <div>
+                        <div key={item.id}>
                             <div className={classes.root}>
                                 <div className={classes.image}>
                                     <img src={item.imgBook} alt={`Book ${item.title}`}/>
