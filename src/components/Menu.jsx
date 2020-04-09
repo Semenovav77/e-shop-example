@@ -15,6 +15,7 @@ import RubleSVG from './../assets/ruble.svg'
 import CardActions from "@material-ui/core/CardActions/CardActions";
 import PopupState, {bindTrigger} from 'material-ui-popup-state';
 import {Popup} from './../components';
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -70,6 +71,22 @@ const useStyles = makeStyles((theme) => ({
         display: 'none',
         [theme.breakpoints.up('md')]: {
             display: 'flex',
+            alignItems: 'center',
+            '& p': {
+                marginRight: 5
+            },
+            '& span': {
+                marginRight: 15,
+                color: '#fff',
+                textTransform: 'uppercase',
+                '&:hover': {
+                    cursor: 'pointer',
+                },
+            },
+            '& a': {
+                textDecoration: 'none'
+            }
+
         },
     },
     sectionMobile: {
@@ -196,6 +213,9 @@ const PrimarySearchAppBar = ({shoppingProd, delItem}) => {
                     </div>
                     <div className={classes.grow}/>
                     <div className={classes.sectionDesktop}>
+                        <Link to='/login'>
+                            <span> Войти </span>
+                        </Link>
                         <p>{price}</p>
                         <img src={RubleSVG} alt='Ruble Svg'/>
                         <PopupState variant="popover" popupId="demo-popup-popover">

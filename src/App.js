@@ -1,26 +1,17 @@
 import React from 'react';
+import {Switch, Route} from 'react-router-dom';
 
 import './App.css';
-import {PrimarySearchAppBar} from './components';
-import {Products} from './components';
-import Container from '@material-ui/core/Container'
-import {makeStyles} from "@material-ui/core/styles";
+import {HomeContainer} from "./containers";
+import {LoginContainer} from "./containers";
 
-const useStyles = makeStyles({
-    cards: {
-        display: 'flex',
-        flexWrap: 'wrap'
-    }
-});
-
-const App = ({products:{items, shoppingProd}, addItem, delItem}) => {
-    const classes = useStyles();
+const App = () => {
     return (
-        <div className="container">
-            <PrimarySearchAppBar shoppingProd={shoppingProd} delItem={delItem}/>
-            <Container className={classes.cards}>
-                <Products items={items} addItem={addItem}/>
-            </Container>
+        <div>
+            <Switch>
+                <Route exact path='/login' render={() => <LoginContainer />}/>
+                <Route path={['/','/users']} render={() => <HomeContainer/>}/>
+            </Switch>
         </div>
     );
 };
