@@ -1,5 +1,9 @@
 import {withFormik} from 'formik';
+import {connect} from 'react-redux';
+
 import {Login} from "./../components";
+import {loginThunkCreator} from "../redux/authReducer";
+import { withSnackbar } from 'notistack';
 
 const LoginContainer = withFormik({
     mapPropsToValues: () => ({email: '', password: '', remember: false}),
@@ -10,14 +14,18 @@ const LoginContainer = withFormik({
             return errors;*/
     },
 
-    handleSubmit: (values, {setSubmitting}) => {
-        setTimeout(() => {
+    handleSubmit: (values, {props, setSubmitting}) => {
+        props.loginThunkCreator(values.email, values.password, props.enqueueSnackbar);
+        setSubmitting(false);
+  /*      setTimeout(() => {
             alert(JSON.stringify(values, null, 2));
             setSubmitting(false);
-        }, 1000);
+        }, 1000);*/
     },
 
     displayName: 'Login', // helps with React DevTools
 })(Login);
 
-export default LoginContainer;
+
+
+export default connect(null, {loginThunkCreator}) (withSnackbar(LoginContainer));

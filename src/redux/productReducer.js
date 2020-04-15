@@ -13,19 +13,7 @@ let initialState = {
             old: Number((Math.random() * 700 + 1).toFixed()),
         }
     })),
-    shoppingProd: [],
-    users: [
-        {
-            id: 1,
-            login: 'Vasya',
-            password: 'Vasya',
-        },
-        {
-            id: 2,
-            login: 'Petya',
-            password: 'Petya',
-        },
-    ]
+    shoppingProd: []
 };
 
 const productReducer = (state = initialState, action) => {
