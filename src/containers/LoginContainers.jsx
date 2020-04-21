@@ -26,6 +26,8 @@ const LoginContainer = withFormik({
     displayName: 'Login', // helps with React DevTools
 })(Login);
 
+const mapStateToProps = (state) => ({
+    isAuth: state.authPage.isAuth
+});
 
-
-export default connect(null, {loginThunkCreator}) (withSnackbar(LoginContainer));
+export default connect(mapStateToProps, {loginThunkCreator}) (withSnackbar(LoginContainer));

@@ -4,7 +4,8 @@ const SET_AUTH_REFRESH_TOKEN = 'SET_AUTH_REFRESH_TOKEN';
 
 let initialState = {
     users: [],
-    refreshToken: ''
+    refreshToken: '',
+    isAuth: false
 };
 
 const authReducer = (state = initialState, action) => {
@@ -12,7 +13,8 @@ const authReducer = (state = initialState, action) => {
         case SET_AUTH_REFRESH_TOKEN:
             return {
                 ...state,
-                refreshToken: action.refreshToken
+                refreshToken: action.refreshToken,
+                isAuth: action.isAuth
             };
         default:
             return state;
@@ -21,19 +23,19 @@ const authReducer = (state = initialState, action) => {
 
 export const setRefreshToken = (refreshToken) => ({
     type: SET_AUTH_REFRESH_TOKEN,
-    refreshToken
+    refreshToken,
+    isAuth: true
 });
 
 export const loginThunkCreator = (email, password, enqueueSnackbar) => {
     return (dispatch) => {
-        authAPI.login(email, password).then( data => {
-            dispatch(setRefreshToken(data.data.refreshToken))
+        authAPI.login(email, password).then(data => {
+                dispatch(setRefreshToken(data.data.refreshToken))
             }
-        ).catch( err => {
-                console.log(err.status);
-               enqueueSnackbar(err.message, {
-                   variant: 'error'
-               })
+        ).catch(err => {
+                enqueueSnackbar(err.message, {
+                    variant: 'error'
+                })
             }
         )
     }

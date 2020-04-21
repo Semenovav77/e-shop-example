@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const PrimarySearchAppBar = ({shoppingProd, delItem}) => {
+const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSearch}) => {
     let countShopping = 0;
     let price = 0;
     shoppingProd.forEach((item) => {
@@ -209,6 +209,8 @@ const PrimarySearchAppBar = ({shoppingProd, delItem}) => {
                                 input: classes.inputInput,
                             }}
                             inputProps={{'aria-label': 'search'}}
+                            value={inputValue}
+                            onChange={(e) => {onChangeInputSearch(e)}}
                         />
                     </div>
                     <div className={classes.grow}/>

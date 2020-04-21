@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {Link} from "react-router-dom";
+import {Redirect, useHistory} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -43,10 +44,15 @@ const Login =  (props) => {
         errors,
         handleChange,
         handleBlur,
-        handleSubmit
+        handleSubmit,
+        isAuth
     } = props;
     const classes = useStyles();
-
+    const history = useHistory();
+    if (isAuth) {
+     /*   return <Redirect to={'/'}/>*/
+         history.push('/');
+    };
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
