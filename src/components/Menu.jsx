@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSearch}) => {
+const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSearch, isAuth, logoutThunkCreator}) => {
     let countShopping = 0;
     let price = 0;
     shoppingProd.forEach((item) => {
@@ -215,9 +215,16 @@ const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSe
                     </div>
                     <div className={classes.grow}/>
                     <div className={classes.sectionDesktop}>
-                        <Link to='/login'>
-                            <span> Войти </span>
-                        </Link>
+                        {!isAuth ? (
+                            <Link to='/login'>
+                                <span> Войти </span>
+                            </Link>
+                        ) : (
+                            <div>
+                                <span onClick={logoutThunkCreator}> Выйти </span>
+                            </div>
+                        )
+                        }
                         <p>{price}</p>
                         <img src={RubleSVG} alt='Ruble Svg'/>
                         <PopupState variant="popover" popupId="demo-popup-popover">
