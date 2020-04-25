@@ -38,10 +38,10 @@ export const setRefreshToken = (token, refreshToken) => ({
     isAuth: true
 });
 
-export const setLogout = (token, refreshToken) => ({
-    type: SET_AUTH_REFRESH_TOKEN,
-    token,
-    refreshToken,
+export const setLogout = () => ({
+    type: SET_AUTH_LOGOUT,
+    token: null,
+    refreshToken: null,
     isAuth: false
 });
 
@@ -61,11 +61,16 @@ export const loginThunkCreator = (email, password, enqueueSnackbar) => {
 export const logoutThunkCreator = () => {
     return (dispatch) => {
         authAPI.logout().then(data => {
-                dispatch(setLogout(null, null))
+                dispatch(setLogout())
             }
         ).catch(err => {
             }
         )
+    }
+};
+export const logoutThunkCreatorFromInterceptors = () => {
+    return (dispatch) => {
+                dispatch(setLogout())
     }
 };
 
