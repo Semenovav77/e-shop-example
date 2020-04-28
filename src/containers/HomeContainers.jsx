@@ -7,7 +7,8 @@ import {logoutThunkCreator} from './../redux/authReducer';
 
 const mapStateToProps = (state) => ({
    products: state.productsPage,
-   isAuth: state.authPage.isAuth
+   isAuth: state.authPage.isAuth,
+   user: state.authPage.user
 });
 
 const HomeContainer = connect(mapStateToProps, {addItem, delItem, logoutThunkCreator})(Home);

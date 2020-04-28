@@ -18,12 +18,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const User = ({users}) => {
+const User = ({user}) => {
     const classes = useStyles();
     return (
         <>
             <div className={classes.root}>
-                {console.log(users)}
+                {user}
             </div>
         </>
     );

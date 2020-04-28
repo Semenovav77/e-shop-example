@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     }
 });
 
-const Home = ({products: {items, shoppingProd}, addItem, delItem, isAuth, logoutThunkCreator}) => {
+const Home = ({products: {items, shoppingProd}, addItem, delItem, isAuth, user, logoutThunkCreator}) => {
     const classes = useStyles();
     const [itemsFiltred, setFiltredItems] = useState(Array.from(items));
     const [inputValue, setValue] = useState('');
@@ -25,7 +25,7 @@ const Home = ({products: {items, shoppingProd}, addItem, delItem, isAuth, logout
     return (
         <div className="container">
             <PrimarySearchAppBar shoppingProd={shoppingProd} delItem={delItem} onChangeInputSearch={onChangeInputSearch}
-                                 inputValue={inputValue} isAuth={isAuth} logoutThunkCreator={logoutThunkCreator}/>
+                                 inputValue={inputValue} isAuth={isAuth} user={user} logoutThunkCreator={logoutThunkCreator}/>
             <Switch>
                 <Route exact path='/' render={() => {
                     return (

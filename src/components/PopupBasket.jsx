@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Popup = ({popupState, shoppingProd, delItem}) => {
+const PopupBasket = ({popupState, shoppingProd, delItem}) => {
     const classes = useStyles();
     return (
         <>
@@ -77,4 +77,4 @@ const Popup = ({popupState, shoppingProd, delItem}) => {
     );
 };
 
-export default Popup;
+export default PopupBasket;

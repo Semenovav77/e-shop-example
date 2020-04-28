@@ -14,7 +14,8 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import RubleSVG from './../assets/ruble.svg'
 import CardActions from "@material-ui/core/CardActions/CardActions";
 import PopupState, {bindTrigger} from 'material-ui-popup-state';
-import {Popup} from './../components';
+import {PopupBasket} from './../components';
+import {PopupCabinet} from './../components';
 import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,6 +30,13 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up('sm')]: {
             display: 'block',
         },
+        '& a': {
+            textDecoration: 'none',
+            color: '#fff',
+            '&:hover': {
+                color: '#fff'
+            }
+        }
     },
     search: {
         position: 'relative',
@@ -97,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSearch, isAuth, logoutThunkCreator}) => {
+const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSearch, isAuth, user, logoutThunkCreator}) => {
     let countShopping = 0;
     let price = 0;
     shoppingProd.forEach((item) => {
@@ -161,7 +169,7 @@ const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSe
                 <img src={RubleSVG} alt='Ruble Svg'/>
             </MenuItem>
             <MenuItem>
-                <PopupState variant="popover" popupId="demo-popup-popover">
+                <PopupState variant="popover" popupId="basket-popup-popover">
                     {(popupState) => (
                         <>
                             <IconButton aria-label="show 11 new notifications"
@@ -171,7 +179,7 @@ const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSe
                                 </Badge>
                                 <p>Shopping</p>
                             </IconButton>
-                            <Popup popupState={popupState} shoppingProd={shoppingProd} delItem={delItem}/>
+                            <PopupBasket popupState={popupState} shoppingProd={shoppingProd} delItem={delItem}/>
                         </>
                     )}
                 </PopupState>
@@ -194,10 +202,12 @@ const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSe
         <div className={classes.grow}>
             <AppBar position="static">
                 <Toolbar>
-
                     <Typography className={classes.title} variant="h6" noWrap>
-                        E-Shop
+                        <Link to='/'>
+                            E-Shop
+                        </Link>
                     </Typography>
+
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <SearchIcon/>
@@ -210,7 +220,9 @@ const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSe
                             }}
                             inputProps={{'aria-label': 'search'}}
                             value={inputValue}
-                            onChange={(e) => {onChangeInputSearch(e)}}
+                            onChange={(e) => {
+                                onChangeInputSearch(e)
+                            }}
                         />
                     </div>
                     <div className={classes.grow}/>
@@ -219,15 +231,24 @@ const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSe
                             <Link to='/login'>
                                 <span> Войти </span>
                             </Link>
-                        ) : (
-                            <div>
-                                <span onClick={logoutThunkCreator}> Выйти </span>
-                            </div>
+                        ) : (<>
+                                <div>
+                                    <PopupState variant="popover" popupId="cabinet-popup-popover">
+                                        {(popupStateCabinet) => (
+                                            <>
+                                                <span  {...bindTrigger(popupStateCabinet)}>{user}</span>
+                                                <PopupCabinet popupStateCabinet={popupStateCabinet} user={user}
+                                                              logout={logoutThunkCreator}/>
+                                            </>
+                                        )}
+                                    </PopupState>
+                                </div>
+                            </>
                         )
                         }
                         <p>{price}</p>
                         <img src={RubleSVG} alt='Ruble Svg'/>
-                        <PopupState variant="popover" popupId="demo-popup-popover">
+                        <PopupState variant="popover" popupId="basket-popup-popover">
                             {(popupState) => (
                                 <>
                                     <IconButton aria-label="show 17 new notifications"
@@ -236,7 +257,7 @@ const PrimarySearchAppBar = ({shoppingProd, delItem, inputValue, onChangeInputSe
                                             <ShoppingCartIcon/>
                                         </Badge>
                                     </IconButton>
-                                    <Popup popupState={popupState} shoppingProd={shoppingProd} delItem={delItem}/>
+                                    <PopupBasket popupState={popupState} shoppingProd={shoppingProd} delItem={delItem}/>
                                 </>
                             )}
                         </PopupState>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles, withStyles} from "@material-ui/core/styles";
 
 import {User} from './../components';
@@ -20,13 +20,17 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Users = ({users}) => {
+const Users = ({users, getUsersThunkCreator}) => {
     const classes = useStyles();
+    useEffect(() => {
+        getUsersThunkCreator()
+    },[]);
     return (
         <>
             <div className={classes.root}>
                 <p>{'Users'}</p>
-               {users.map((item) => <User key={item.id} users={users}/>)}
+                {console.log(users)}
+               {users.length>0 && users.map((item) => <User key={item.id} user={item.login}/>)}
             </div>
         </>
     );

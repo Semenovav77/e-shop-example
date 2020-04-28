@@ -1,13 +1,16 @@
 import {authAPI} from "../api/api";
+import jwt from 'jwt-decode';
 
 const SET_AUTH_REFRESH_TOKEN = 'SET_AUTH_REFRESH_TOKEN';
 const SET_AUTH_LOGOUT = 'SET_AUTH_LOGOUT';
+const SET_USERS = 'SET_USERS';
 
 let initialState = {
     users: [],
     token: null,
     refreshToken: null,
-    isAuth: false
+    isAuth: false,
+    user: null
 };
 
 const authReducer = (state = initialState, action) => {
@@ -17,7 +20,8 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 token: action.token,
                 refreshToken: action.refreshToken,
-                isAuth: action.isAuth
+                isAuth: action.isAuth,
+                user: action.userInfo.login
             };
         case SET_AUTH_LOGOUT:
             return {
@@ -26,16 +30,22 @@ const authReducer = (state = initialState, action) => {
                 refreshToken: action.refreshToken,
                 isAuth: action.isAuth
             };
+        case SET_USERS:
+            return {
+                ...state,
+                users: action.users
+            };
         default:
             return state;
     }
 };
 
-export const setRefreshToken = (token, refreshToken) => ({
+export const setRefreshToken = (token, refreshToken, userInfo) => ({
     type: SET_AUTH_REFRESH_TOKEN,
     token,
     refreshToken,
-    isAuth: true
+    isAuth: true,
+    userInfo
 });
 
 export const setLogout = () => ({
@@ -45,10 +55,16 @@ export const setLogout = () => ({
     isAuth: false
 });
 
+export const setUsers = (users) => ({
+    type: SET_USERS,
+    users
+});
+
 export const loginThunkCreator = (email, password, enqueueSnackbar) => {
     return (dispatch) => {
         authAPI.login(email, password).then(data => {
-                dispatch(setRefreshToken(data.token, data.refreshToken))
+                const userInfo = jwt(data.token);
+                dispatch(setRefreshToken(data.token, data.refreshToken, userInfo))
             }
         ).catch(err => {
                 enqueueSnackbar(err.message, {
@@ -58,6 +74,15 @@ export const loginThunkCreator = (email, password, enqueueSnackbar) => {
         )
     }
 };
+
+export const getUsersThunkCreator = () => {
+    return (dispatch) => {
+        authAPI.getUsers().then(data => {
+            data && dispatch(setUsers(data.data))
+        })
+    }
+};
+
 export const logoutThunkCreator = () => {
     return (dispatch) => {
         authAPI.logout().then(data => {

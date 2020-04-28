@@ -1,5 +1,6 @@
 import axios from 'axios';
-import {setLogout, logoutThunkCreatorFromInterceptors} from './../redux/authReducer'
+import {setUsers, logoutThunkCreatorFromInterceptors, setRefreshToken} from './../redux/authReducer'
+import jwt from "jwt-decode";
 
 const instance = axios.create({
     withCredentials: true,
@@ -36,11 +37,13 @@ instance.interceptors.response.use((response) => {
         return Promise.reject(error);
     }
     if (!refreshRequest) {
-        refreshRequest = instance.post('auth/refresh', {refreshToken})
+        refreshRequest = instance.post('auth/refresh', {refreshToken, token})
     }
     refreshRequest.then(data => {
         token = data.data.token;
         refreshToken = data.data.refreshToken;
+        const userInfo = jwt(token);
+        window.__store__.dispatch(setRefreshToken(token, refreshToken, userInfo));
         localStorage.setItem('token', JSON.stringify(token));
         localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
         const newRequest = {
@@ -48,11 +51,14 @@ instance.interceptors.response.use((response) => {
             retry: true
         };
         refreshRequest = null;
-        return instance(newRequest).then(() => {
+        return instance(newRequest).then((data) => {
                 if (error.config.url === '/auth/logout') {
                     window.__store__.dispatch(logoutThunkCreatorFromInterceptors());
                     localStorage.removeItem('token');
                     localStorage.removeItem('refreshToken');
+                }
+                if (error.config.url === '/users') {
+                    window.__store__.dispatch(setUsers(data.data));
                 }
             }
         );
@@ -86,5 +92,8 @@ export const authAPI = {
             localStorage.removeItem('refreshToken');
             return data.data
         })
+    },
+    getUsers() {
+        return instance.get('/users')
     }
 };
