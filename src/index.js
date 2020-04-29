@@ -6,13 +6,13 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import './index.css';
 import store from './redux/redux-store'
 import * as serviceWorker from './serviceWorker';
-import App from "./App";
+import AppContainer from "./App";
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <Provider store={store}>
-                <App />
+                <AppContainer />
             </Provider>
         </BrowserRouter>
     </React.StrictMode>,

@@ -6,19 +6,19 @@ const instance = axios.create({
     withCredentials: true,
     baseURL: 'http://localhost:3004'
 });
-let token = null;
-let refreshToken = null;
+
 let refreshRequest = null;
 
 // Add a request interceptor
 instance.interceptors.request.use((config) => {
+    let tokenReq = JSON.parse(localStorage.getItem('token'));;
     // Do something before request is sent
-    if (!token) return config;
+    if (!tokenReq) return config;
     const newConfig = {
         headers: {},
         ...config
     };
-    newConfig.headers.Authorization = `Bearer ${token}`;
+    newConfig.headers.Authorization = `Bearer ${tokenReq}`;
     return newConfig;
 }, (error) => {
     // Do something with request error
@@ -33,6 +33,9 @@ instance.interceptors.response.use((response) => {
 }, async error => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    let refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
+    let token = JSON.parse(localStorage.getItem('token'));;
+
     if (!refreshToken || error.response.status != 401 || error.config.retry) {
         return Promise.reject(error);
     }
@@ -40,7 +43,7 @@ instance.interceptors.response.use((response) => {
         refreshRequest = instance.post('auth/refresh', {refreshToken, token})
     }
     refreshRequest.then(data => {
-        token = data.data.token;
+        let token = data.data.token;
         refreshToken = data.data.refreshToken;
         const userInfo = jwt(token);
         window.__store__.dispatch(setRefreshToken(token, refreshToken, userInfo));
@@ -77,17 +80,13 @@ instance.interceptors.response.use((response) => {
 export const authAPI = {
     login(login, password) {
         return instance.post('/auth/login', {login, password}).then(data => {
-            token = data.data.token;
-            refreshToken = data.data.refreshToken;
-            localStorage.setItem('token', JSON.stringify(token));
-            localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
+            localStorage.setItem('token', JSON.stringify(data.data.token));
+            localStorage.setItem('refreshToken', JSON.stringify(data.data.refreshToken));
             return data.data
         })
     },
     logout() {
         return instance.post('/auth/logout').then(data => {
-            token = null;
-            refreshToken = null;
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
             return data.data
@@ -95,5 +94,12 @@ export const authAPI = {
     },
     getUsers() {
         return instance.get('/users')
+    },
+    refreshToken(refreshToken, token) {
+        return instance.post('auth/refresh', {refreshToken, token}).then(data => {
+            localStorage.setItem('token', JSON.stringify(data.data.token));
+            localStorage.setItem('refreshToken', JSON.stringify(data.data.refreshToken));
+            return data
+        })
     }
 };
