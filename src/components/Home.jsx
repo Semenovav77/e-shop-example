@@ -7,15 +7,7 @@ import {PrimarySearchAppBar} from './index';
 import {Products} from './index';
 import {UsersContainer} from './../containers';
 
-const useStyles = makeStyles({
-    cards: {
-        display: 'flex',
-        flexWrap: 'wrap'
-    }
-});
-
 const Home = ({products: {items, shoppingProd}, addItem, delItem, isAuth, user, logoutThunkCreator}) => {
-    const classes = useStyles();
     const [itemsFiltred, setFiltredItems] = useState(Array.from(items));
     const [inputValue, setValue] = useState('');
     const onChangeInputSearch = (e) => {
@@ -28,10 +20,11 @@ const Home = ({products: {items, shoppingProd}, addItem, delItem, isAuth, user, 
                                  inputValue={inputValue} isAuth={isAuth} user={user} logoutThunkCreator={logoutThunkCreator}/>
             <Switch>
                 <Route exact path='/' render={() => {
-                    return (
-                        <Container className={classes.cards}>
+                    return ( <>
+                        <Container>
                             <Products items={itemsFiltred} addItem={addItem}/>
                         </Container>
+                        </>
                     )
                 }}>
                 </Route>
