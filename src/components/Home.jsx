@@ -6,6 +6,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {PrimarySearchAppBar} from './index';
 import {Products} from './index';
 import {UsersContainer} from './../containers';
+import {PrivateRoute} from './commnon';
 
 const Home = ({products: {items, shoppingProd}, addItem, delItem, isAuth, user, logoutThunkCreator}) => {
     const [itemsFiltred, setFiltredItems] = useState(Array.from(items));
@@ -28,7 +29,7 @@ const Home = ({products: {items, shoppingProd}, addItem, delItem, isAuth, user, 
                     )
                 }}>
                 </Route>
-                <Route exact path='/users' render={() => <UsersContainer/>}/>
+                <PrivateRoute exact path='/users' component={UsersContainer}/>
                 <Route path='*' render={() => <div>404 NOT FOUND</div>}/>
             </Switch>
         </div>

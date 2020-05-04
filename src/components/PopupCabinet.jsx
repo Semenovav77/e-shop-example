@@ -6,12 +6,18 @@ import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: 250,
+        width: 200,
         padding: '2px 5px 2px 5px',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'flex-end'
-
+        alignItems: 'flex-end',
+        '& a': {
+            textDecoration: 'none',
+            color: 'black'
+        },
+        '& span': {
+            cursor: 'pointer'
+        }
     }
 }));
 
@@ -33,7 +39,6 @@ const PopupCabinet = ({popupStateCabinet, logout}) => {
                 <div className={classes.root}>
                     <Link to='/users'>
                         <span> Пользователи</span>
-
                     </Link>
                     <span onClick={logout}> Выйти </span>
                 </div>

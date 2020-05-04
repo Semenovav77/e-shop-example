@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Product} from './../components';
 import throttle from 'lodash/throttle';
 import {makeStyles} from "@material-ui/core/styles";
 import InputLabel from '@material-ui/core/InputLabel';
@@ -9,6 +8,10 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import orderBy from 'lodash/orderBy';
 
+import {Product} from './../components';
+import upSVG from './../assets/up.svg';
+import downSVG from './../assets/down.svg';
+
 const useStyles = makeStyles((theme) => ({
     cards: {
         display: 'flex',
@@ -17,6 +20,13 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
+    },
+    option: {
+        '& img': {
+            width: 14,
+            height: 14,
+            marginRight: 5
+        }
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
@@ -80,10 +90,11 @@ const Products = ({items, addItem}) => {
                         value={sortId}
                         onChange={handleChange}
                     >
-                        <MenuItem value={1}>по цене (увел)</MenuItem>
-                        <MenuItem value={2}>по цене (уменьш)</MenuItem>
-                        <MenuItem value={3}>по названию (увел)</MenuItem>
-                        <MenuItem value={4}>по названию (уменьш)</MenuItem>
+                        <MenuItem value={1}><div className={classes.option}> <img src={upSVG} alt='UP svg'/> <span>по цене</span> </div></MenuItem>
+                        <MenuItem value={2}><div className={classes.option}> <img src={downSVG} alt='DOWN svg'/> <span>по цене</span> </div></MenuItem>
+                        <MenuItem value={3}><div className={classes.option}> <img src={upSVG} alt='UP svg'/> <span>по названию</span> </div></MenuItem>
+                        <MenuItem value={4}><div className={classes.option}> <img src={downSVG} alt='DOWN svg'/> <span>по названию</span></div></MenuItem>
+
                     </Select>
                 </FormControl>
 
